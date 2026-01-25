@@ -1,34 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ShaderGradientCanvas
+      style={{ width: '100vw', height: '100vh' }}
+      pixelDensity={1.5}
+      fov={45}
+    >
+      <ShaderGradient
+        animate="on"
+        axesHelper="off"
+        brightness={1.2}
+        cAzimuthAngle={180}
+        cDistance={3.6}
+        cPolarAngle={90}
+        cameraZoom={2.1}
+        color1="#ff2f00"
+        color2="#db72bb"
+        color3="#e18a34"
+        destination="onCanvas"
+        embedMode="off"
+        envPreset="city"
+        format="gif"
+        fov={60}
+        frameRate={10}
+        gizmoHelper="hide"
+        grain="on"
+        lightType="3d"
+        pixelDensity={2.3}
+        positionX={-1.4}
+        positionY={0}
+        positionZ={0}
+        range="enabled"
+        rangeEnd={40}
+        rangeStart={10.2}
+        reflection={0.1}
+        rotationX={0}
+        rotationY={10}
+        rotationZ={50}
+        shader="defaults"
+        type="sphere"
+        uAmplitude={3}
+        uDensity={0.3}
+        uFrequency={5.5}
+        uSpeed={0.1}
+        uStrength={8.6}
+        uTime={10.2}
+        wireframe={false}
+      />
+    </ShaderGradientCanvas>
   )
 }
 
