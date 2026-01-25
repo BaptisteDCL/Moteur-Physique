@@ -19,9 +19,9 @@ export default function PhysicsCanvas() {
     const r = 10 // radius of the ball
     const dt = 0.02 // delta of time
     const boucingCoefficient = -0.5 // 
-    const rho = 1.2
-    const C_d = 0.47
-    const A = Math.PI * r * r / 10000
+    const airDensity = 1.2 // Densité du fluide
+    const ballDragCoefficient = 0.47 // Coefficient de trainée de la balle
+    const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
 
     ctx.fillStyle = 'red'
 
@@ -32,7 +32,7 @@ export default function PhysicsCanvas() {
       fy += mass * 9.81
 
       // Air drag
-      fy += -0.5 * rho * C_d * A * vy * vy * Math.sign(vy)
+      fy += -0.5 * airDensity * ballDragCoefficient * frontalArea * vy * vy * Math.sign(vy)
 
       // Verlet integration
       const dy = vy * dt + 0.5 * ay * dt * dt
