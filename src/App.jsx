@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <ShaderGradientCanvas
-        style={{ width: '100vw', height: '100vh' }}
+        style={{ width: '100vw', height: '100vh', position: 'fixed', inset: 0, zIndex: 0 }}
         pixelDensity={1.5}
         fov={45}
       >
