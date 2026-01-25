@@ -1,12 +1,14 @@
 import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
+import PhysicsCanvas from './PhysicsCanvas'
 
 function App() {
   return (
-    <ShaderGradientCanvas
-      style={{ width: '100vw', height: '100vh' }}
-      pixelDensity={1.5}
-      fov={45}
-    >
+    <>
+      <ShaderGradientCanvas
+        style={{ width: '100vw', height: '100vh' }}
+        pixelDensity={1.5}
+        fov={45}
+      >
       <ShaderGradient
         animate="on"
         axesHelper="off"
@@ -48,7 +50,14 @@ function App() {
         uTime={10.2}
         wireframe={false}
       />
-    </ShaderGradientCanvas>
+      </ShaderGradientCanvas>
+
+      <div style={{ position: 'relative', zIndex: 1, padding: 20 }}>
+        <h2 style={{ color: 'white' }}>Je veux comprendre la physique</h2>
+        <PhysicsCanvas/>
+      </div>
+
+    </>
   )
 }
 
