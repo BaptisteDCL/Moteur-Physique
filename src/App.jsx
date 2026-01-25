@@ -53,7 +53,7 @@ function App() {
       </ShaderGradientCanvas>
 
       <div style={{ position: 'relative', zIndex: 1, padding: 20 }}>
-        <h2 style={{ color: 'white' }}>Je veux comprendre la physique</h2>
+        <h2 style={{ color: 'white' }}>Physique d'une balle</h2>
         <PhysicsCanvas/>
       </div>
 

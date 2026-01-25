@@ -15,10 +15,10 @@ export default function PhysicsCanvas() {
     let vy = 0
     let ay = 0
 
-    const m = 0.1
-    const r = 10
-    const dt = 0.02
-    const e = -0.5
+    const mass = 0.1 // mass of the ball
+    const r = 10 // radius of the ball
+    const dt = 0.02 // delta of time
+    const boucingCoefficient = -0.5 // 
     const rho = 1.2
     const C_d = 0.47
     const A = Math.PI * r * r / 10000
@@ -29,7 +29,7 @@ export default function PhysicsCanvas() {
       let fy = 0
 
       // Weight force
-      fy += m * 9.81
+      fy += mass * 9.81
 
       // Air drag
       fy += -0.5 * rho * C_d * A * vy * vy * Math.sign(vy)
@@ -38,14 +38,14 @@ export default function PhysicsCanvas() {
       const dy = vy * dt + 0.5 * ay * dt * dt
       y += dy * 100
 
-      const new_ay = fy / m
+      const new_ay = fy / mass
       const avg_ay = 0.5 * (new_ay + ay)
       vy += avg_ay * dt
       ay = new_ay
 
       // Collision
       if (y + r > height && vy > 0) {
-        vy *= e
+        vy *= boucingCoefficient
         y = height - r
       }
 
