@@ -24,7 +24,7 @@ export default function PhysicsCanvas() {
     const ballDragCoefficient = 1 // Coefficient de trainée de la balle
     const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
 
-    ctx.fillStyle = 'red'
+    ctx.fillStyle = 'purple'
 
     function loop() {
       let fy = 0
