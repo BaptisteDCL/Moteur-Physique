@@ -57,7 +57,6 @@ export default function PhysicsCanvas() {
       ctx.clearRect(0, 0, width, height)
       ctx.beginPath()
       ctx.arc(x, y, r, 0, Math.PI * 2)
-      ctx.arc(Math.floor(Math.random()*400)+10, y, r, 0, Math.PI * 2)
       ctx.fill()
     }
 
