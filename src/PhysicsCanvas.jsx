@@ -20,7 +20,7 @@ export default function PhysicsCanvas() {
     const dt = 0.02 // delta of time
     const boucingCoefficient = -0.5 // 
     const airDensity = 1.2 // Densité du fluide
-    const ballDragCoefficient = 0.47 // Coefficient de trainée de la balle
+    const ballDragCoefficient = 1 // Coefficient de trainée de la balle
     const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
 
     ctx.fillStyle = 'red'
