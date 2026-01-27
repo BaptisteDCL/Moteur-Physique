@@ -78,14 +78,37 @@ export default function PhysicsCanvas() {
     let y  = 0
     let vy = 0
     let ay = 0
+    // On ajoute la masse de la particule
+    let mass = 10
+    // On change la couleur de la particule pour du violet
+    ctx.fillStyle = 'purple'
     // A chaque instant
     function loop() {
       // Creation de la variable contenant la force en Y
       let yForce = 0 // Force = masse * acceleration
-      // Application de la force de gravité sur la particule
+      // Accumulation de la force de gravité sur la particule
       yForce += mass * 9.81
+      // Application de la force sur la particule
+      y += yForce
+      // On dessine a chaque instant la particule
+      draw()
 
     }
+
+    // Rayon de la balle
+    const r = 10
+    function draw() {
+      ctx.clearRect(0, 0, width, height)
+      ctx.beginPath()
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+      ctx.fill()
+    }
+
+    // Delta de temps
+    const dt = 0.02
+    const interval = setInterval(loop, dt * 1000)
+
+    return () => clearInterval(interval)
   }, [])
 
   return (
