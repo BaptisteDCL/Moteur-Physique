@@ -3,6 +3,7 @@ import { rand } from 'three/tsl'
 
 export default function PhysicsCanvas() {
   const canvasRef = useRef(null)
+  const canvasRef2 = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -16,7 +17,7 @@ export default function PhysicsCanvas() {
     let vy = 0
     let ay = 0
 
-    const mass = 0.1 // mass of the ball
+    const mass = 10 // mass of the ball
     const r = 10 // radius of the ball
     const dt = 0.02 // delta of time
     const boucingCoefficient = -0.5 // 
@@ -66,14 +67,25 @@ export default function PhysicsCanvas() {
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={400}
-      height={400}
-      style={{
-        border: '1px solid white',
-        background: 'black'
-      }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={400}
+        height={400}
+        style={{
+          border: '1px solid white',
+          background: 'black'
+        }}
+      />
+      <canvas
+        ref={canvasRef2}
+        width={400}
+        height={400}
+        style={{
+          border: '1px solid white',
+          background: 'black'
+        }}
+      />
+    </>
   )
 }
