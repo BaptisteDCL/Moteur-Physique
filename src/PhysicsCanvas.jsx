@@ -66,6 +66,20 @@ export default function PhysicsCanvas() {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    // Ajout de l'objet que je veux créer
+    const canvas = canvasRef2.current
+    const ctx = canvas.getContext('2d')
+    // Ajout des limites du monde qui a été créé
+    const height = 400
+    const width  = 400
+    // Ajout de la "vie" dans mon canvas
+    var x  = 200
+    var y  = 0
+    var vy = 0
+    var ay = 0
+  }, [])
+
   return (
     <>
       <canvas
