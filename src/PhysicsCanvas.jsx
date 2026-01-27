@@ -74,10 +74,18 @@ export default function PhysicsCanvas() {
     const height = 400
     const width  = 400
     // Ajout de la "vie" dans mon canvas
-    var x  = 200
-    var y  = 0
-    var vy = 0
-    var ay = 0
+    let x  = 200
+    let y  = 0
+    let vy = 0
+    let ay = 0
+    // A chaque instant
+    function loop() {
+      // Creation de la variable contenant la force en Y
+      let yForce = 0 // Force = masse * acceleration
+      // Application de la force de gravité sur la particule
+      yForce += mass * 9.81
+
+    }
   }, [])
 
   return (
