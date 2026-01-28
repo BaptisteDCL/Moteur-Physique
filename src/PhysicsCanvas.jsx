@@ -67,31 +67,7 @@ export default function PhysicsCanvas() {
   }, [])
 
   useEffect(() => {
-    // Ajout de l'objet que je veux créer
-    const canvas = canvasRef2.current
-    const ctx = canvas.getContext('2d')
-    // Ajout des limites du monde qui a été créé
-    const height = 400
-    const width  = 400
-    // Ajout de la "vie" dans mon canvas
-    let x  = 200
-    let y  = 0
-    let vy = 0
-    let ay = 0
-    // On ajoute la masse de la particule
-    let mass = 10
-    // On change la couleur de la particule pour du violet
-    ctx.fillStyle = 'purple'
-    // A chaque instant
-    function loop() {
-      // Creation de la variable contenant la force en Y
-      let yForce = 0 // Force = masse * acceleration
-      // Accumulation de la force de gravité sur la particule
-      yForce += mass * 9.81
-      // Application de la force sur la particule
-      y += yForce
-      // On dessine a chaque instant la particule
-      draw()
+    //Remise à zero
 
     }
 
