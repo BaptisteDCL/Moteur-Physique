@@ -68,7 +68,55 @@ export default function PhysicsCanvas() {
 
   useEffect(() => {
     //Remise à zero
+    // Creation de l'objet qui contiendra le canva
+    const canvas = canvasRef2.current
+    const ctx = canvas.getContext('2d')
+    const dt = 0.02
+    // Creation des limites de l'univers
+    let height = 400
+    let width  = 400
+    // Ajout de la vie dans l'univers
+    let x = 200
+    let y = 0
+    let fy = 0
+    let vy = 1
+    let ay = 0
+    let mass = 1
 
+    ctx.fillStyle = 'purple'
+    // A chaque nouvelle frame
+    function loop() {
+      let fy = 0
+
+      // Weight force
+      fy += mass * 9.81
+
+      // Air drag
+      fy += -0.5 * airDensity * ballDragCoefficient * frontalArea * vy * vy * Math.sign(vy)
+
+      // Ajout de l'integration de verlet
+      const dy = vy * dt + 0.5 * ay * dt * dt
+      // Ajout du resultat de l'equation à la vélocité
+      y += dy * 100
+
+      // reccuperation de l'acceleration actuelle
+      const new_ay = fy / mass
+      // Reccuperation de la moyenne entre l'acceleration actuelle et celle du pas de temps dernier
+      const avg_ay = 0.5 * (new_ay + ay)
+      // Ajout de l'acceleration moyenne scaled sur le temps à la vélocité actuelle
+      vy += avg_ay * dt
+
+      // Ajout de la collision
+      // Si la balle dépasse la limite de l'univers de son rayon et que sa vitesse est positive
+      // La vélocité de la particule est inversée de moitié
+      // On replace la balle en dehors de la limite, de la taille de son rayon
+      if (y + r > height && vy > 0) {
+        vy *= boucingCoefficient
+        y = height - r
+      }
+
+
+      draw()
     }
 
     // Rayon de la balle
@@ -80,8 +128,6 @@ export default function PhysicsCanvas() {
       ctx.fill()
     }
 
-    // Delta de temps
-    const dt = 0.02
     const interval = setInterval(loop, dt * 1000)
 
     return () => clearInterval(interval)
