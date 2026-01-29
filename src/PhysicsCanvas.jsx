@@ -27,10 +27,11 @@ export default function PhysicsCanvas() {
     ctx.fillStyle = 'purple'
 
     function loop() {
+      // Force à l'instant T
       let fy = 0
 
-      // Weight force
-      fy += mass * 9.81
+      // Le poids est égal à la masse * la gravité
+      fy = mass * 9.81
 
       // Air drag
       fy += -0.5 * airDensity * ballDragCoefficient * frontalArea * vy * vy * Math.sign(vy)
