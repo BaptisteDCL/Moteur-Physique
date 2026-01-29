@@ -1,7 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function PhysicsCanvas() {
   const canvasRef = useRef(null)
+
+  const [VyOffset, setVy] = useState(0)
+  const [boucingCoefficient] = useState(-0.5)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -12,7 +15,7 @@ export default function PhysicsCanvas() {
 
     let x = 200
     let y = 0
-    let vy = 0
+    let vy = VyOffset
     let ay = 0
 
     const mass = 10 // mass of the ball
@@ -51,6 +54,10 @@ export default function PhysicsCanvas() {
       }
 
       draw()
+      if (VyOffset !== 0){
+        vy *= VyOffset
+        setVy(0)
+      }
     }
 
     function draw() {
@@ -63,7 +70,7 @@ export default function PhysicsCanvas() {
     const interval = setInterval(loop, dt * 1000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [VyOffset])
 
   return (
     <>
@@ -76,7 +83,9 @@ export default function PhysicsCanvas() {
           background: 'black'
         }}
       />
-      <button></button>
+      <button
+      onClick={() => setVy(boucingCoefficient)}
+      style={{marginTop: 10}}>Faire sauter la particule</button>
     </>
   )
 }
