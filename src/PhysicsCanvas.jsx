@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { rand } from 'three/tsl'
 
 export default function PhysicsCanvas() {
   const canvasRef = useRef(null)
@@ -67,14 +66,17 @@ export default function PhysicsCanvas() {
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={400}
-      height={400}
-      style={{
-        border: '1px solid white',
-        background: 'black'
-      }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={400}
+        height={400}
+        style={{
+          border: '1px solid white',
+          background: 'black'
+        }}
+      />
+      <button></button>
+    </>
   )
 }
