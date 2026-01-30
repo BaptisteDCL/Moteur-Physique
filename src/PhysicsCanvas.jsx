@@ -36,7 +36,9 @@ export default function PhysicsCanvas() {
       fy = mass * 9.81
 
       // Air drag
-      fy += -0.5 * airDensity * ballDragCoefficient * frontalArea * vy * vy * Math.sign(vy)
+      // Coefficient de trainnée de la particule
+      let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
+      fy += particuleDrag * vy * vy * Math.sign(vy)
 
       // Verlet integration
       const dy = vy * dt + 0.5 * ay * dt * dt
