@@ -87,6 +87,7 @@ export default function PhysicsCanvas() {
           background: 'black'
         }}
       />
+      <p>ajouter un boutton pour changer la densité de l'air à celle de l'eau</p>
       <button
       onClick={() => setVy(boucingCoefficient)}
       style={{marginTop: 10}}>Faire sauter la particule</button>
