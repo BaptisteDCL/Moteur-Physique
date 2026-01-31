@@ -38,7 +38,9 @@ export default function PhysicsCanvas() {
       // Air drag
       // Coefficient de trainnée de la particule
       let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
-      fy += particuleDrag * vy * vy * Math.sign(vy)
+      // Application des effets par rapport au carré de la vitesse (plus je vais vite, plus je dois déplacer de l'air autour de mois de manière quadratique)
+      let effetsByVelocity = vy * vy
+      fy += particuleDrag * effetsByVelocity * Math.sign(vy)
 
       // Verlet integration
       const dy = vy * dt + 0.5 * ay * dt * dt
