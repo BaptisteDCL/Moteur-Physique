@@ -42,8 +42,12 @@ export default function PhysicsCanvas() {
       let effetsByVelocity = vy * vy
       fy += particuleDrag * effetsByVelocity * Math.sign(vy)
 
-      // Verlet integration
-      const dy = vy * dt + 0.5 * ay * dt * dt
+      // Verlet integration <-- ? Je ne sais pas à quoi ça sert
+      // Captation d'à quel point la particule s'est déplacée dans cette frame
+      let distanceRunned = vy * dt
+      // Distance parcourue due à l'acceleration moyenne de la particule pendant la frame
+      let meanAccelDist = 0.5 * ay * dt * dt
+      const dy = distanceRunned + meanAccelDist
       y += dy * 100
 
       const new_ay = fy / mass
