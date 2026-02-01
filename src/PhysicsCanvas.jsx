@@ -53,10 +53,13 @@ export default function PhysicsCanvas() {
       // On applique le mouvement à la position actuelle de la particule
       y += dy * 100
 
-      // La nouvelle acceleration est égale à la force (gravité - résistance du fluide) divisé par la masse = acceleration
+      // Accélération selon la deuxième loi de Newton
       const new_ay = fy / mass
+      // Reccupération de l'accélération moyenne entre le pas d'avant et l'accélération actuelle
       const avg_ay = 0.5 * (new_ay + ay)
+      // On ajoute le déplacement moyen sur la frame actuelle du à l'accélération
       vy += avg_ay * dt
+      // On stocke l'accélération actuelle
       ay = new_ay
 
       // Collision
