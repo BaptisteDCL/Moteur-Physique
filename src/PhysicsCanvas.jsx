@@ -38,7 +38,7 @@ export default function PhysicsCanvas() {
       // Air drag
       // Coefficient de trainnée de la particule
       let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
-      // Application des effets par rapport au carré de la vitesse (plus je vais vite, plus je dois déplacer de l'air autour de mois de manière quadratique)
+      // Application des effets par rapport au carré de la vitesse (plus je vais vite, plus je dois déplacer de l'air autour de moi)
       let effetsByVelocity = vy * vy
       fy += particuleDrag * effetsByVelocity * Math.sign(vy)
 
@@ -49,8 +49,11 @@ export default function PhysicsCanvas() {
       let meanAccelDist = 0.5 * ay * dt * dt
       // Distance parcourue par la particule avec l'integration de Verlet Vitesse * deltaTemps + moyenne(acceleration * deltaTemps²)
       const dy = distanceRunned + meanAccelDist
+      
+      // On applique le mouvement à la position actuelle de la particule
       y += dy * 100
 
+      // La nouvelle acceleration est égale à la force (gravité - résistance du fluide) divisé par la masse = acceleration
       const new_ay = fy / mass
       const avg_ay = 0.5 * (new_ay + ay)
       vy += avg_ay * dt
