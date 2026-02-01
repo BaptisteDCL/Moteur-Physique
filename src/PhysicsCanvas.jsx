@@ -21,7 +21,7 @@ export default function PhysicsCanvas() {
     const mass = 10 // mass of the ball
     const r = 10 // radius of the ball
     const dt = 0.02 // delta of time
-    const boucingCoefficient = -0.5 // 
+    const boucingCoefficient = -0.25 // A quel point la particule rebondit
     const airDensity = 1.2 // Densité du fluide
     const ballDragCoefficient = 1 // Coefficient de trainée de la balle
     const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
@@ -71,8 +71,9 @@ export default function PhysicsCanvas() {
       }
 
       draw()
+
       if (VyOffset !== 0){
-        vy *= VyOffset
+        vy *= boucingCoefficient
         setVy(0)
       }
     }
