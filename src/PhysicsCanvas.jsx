@@ -42,6 +42,7 @@ export default function PhysicsCanvas() {
       let effetsByVelocity = vy * vy
       fy += particuleDrag * effetsByVelocity * Math.sign(vy)
 
+      // [Passé]
       // Verlet integration
       // Captation d'à quel point la particule s'est déplacée dans cette frame
       let distanceRunned = vy * dt
@@ -50,6 +51,7 @@ export default function PhysicsCanvas() {
       // Distance parcourue par la particule avec l'integration de Verlet Vitesse * deltaTemps + moyenne(acceleration * deltaTemps²)
       const dy = distanceRunned + meanAccelDist
       
+      // [Présent]
       // On applique le mouvement à la position actuelle de la particule
       y += dy * 100
 
@@ -59,7 +61,7 @@ export default function PhysicsCanvas() {
       const avg_ay = 0.5 * (new_ay + ay)
       // On ajoute le déplacement moyen sur la frame actuelle du à l'accélération
       vy += avg_ay * dt
-      // On stocke l'accélération actuelle
+      // On stocke l'accélération actuelle à t + dt
       ay = new_ay
 
       // Collision
