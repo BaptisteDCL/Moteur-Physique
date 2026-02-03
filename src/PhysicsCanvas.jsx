@@ -88,6 +88,7 @@ export default function PhysicsCanvas() {
     const interval = setInterval(loop, dt * 1000)
 
     return () => clearInterval(interval)
+    // Modifier le comportement pour appliquer une impulsion vers le haut
   }, [VyOffset])
 
   return (
