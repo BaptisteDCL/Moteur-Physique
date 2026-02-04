@@ -32,7 +32,7 @@ export default function PhysicsCanvas() {
       // Force à l'instant T
       let fy = 0
 
-      // Le poids est égal à la masse * la gravité
+      // La force est égale à la masse * la gravité
       fy = mass * 9.81
 
       // Air drag
