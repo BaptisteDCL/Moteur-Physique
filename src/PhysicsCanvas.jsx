@@ -32,16 +32,6 @@ export default function PhysicsCanvas() {
       // Force à l'instant T
       let fy = 0
 
-      // La force est égale à la masse * la gravité
-      fy = mass * 9.81
-
-      // Air drag
-      // Coefficient de trainnée de la particule
-      let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
-      // Application des effets par rapport au carré de la vitesse (plus je vais vite, plus je dois déplacer de l'air autour de moi)
-      let effetsByVelocity = vy * vy
-      fy += particuleDrag * effetsByVelocity * Math.sign(vy)
-
       // [Passé]
       // Verlet integration
       // Captation d'à quel point la particule s'est déplacée dans cette frame
@@ -54,21 +44,23 @@ export default function PhysicsCanvas() {
       // [Présent]
       // On applique le mouvement à la position actuelle de la particule
       y += dy * 100
-
-      // Accélération selon la deuxième loi de Newton
-      const new_ay = fy / mass
-      // Reccupération de l'accélération moyenne entre le pas d'avant et l'accélération actuelle
-      const avg_ay = 0.5 * (new_ay + ay)
-      // On ajoute le déplacement moyen sur la frame actuelle du à l'accélération
-      vy += avg_ay * dt
-      // On stocke l'accélération actuelle à t + dt
-      ay = new_ay
-
       // Collision
       if (y + r > height && vy > 0) {
         vy *= boucingCoefficient
         y = height - r
       }
+
+      // [Futur]
+      // Calcul de la force totale qui sera appliquée à la particule en fin de frame
+      fy = mass * 9.81
+      let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
+      let effetsByVelocity = vy * vy
+      fy += particuleDrag * effetsByVelocity * Math.sign(vy)
+      // On détermine l'accélération que la particule a, à la fin de la frame
+      const new_ay = fy / mass
+      const avg_ay = 0.5 * (new_ay + ay)
+      vy += avg_ay * dt
+      ay = new_ay
 
       draw()
 
