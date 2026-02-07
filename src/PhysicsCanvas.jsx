@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 export default function PhysicsCanvas() {
   const canvasRef = useRef(null)
 
-  const [VyOffset, setVy] = useState(0)
+  const [AirDens, setVy] = useState(1.2)
   const [boucingCoefficient] = useState(-0.5)
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export default function PhysicsCanvas() {
 
     let x = 200
     let y = 0
-    let vy = VyOffset
+    let vy = 0
     let ay = 0
 
     const mass = 10 // mass of the ball
     const r = 10 // radius of the ball
     const dt = 0.02 // delta of time
     const boucingCoefficient = -0.25 // A quel point la particule rebondit
-    const airDensity = 1.2 // Densité du fluide
+    const airDensity = AirDens // Densité du fluide
     const ballDragCoefficient = 1 // Coefficient de trainée de la balle
     const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
 
@@ -81,7 +81,7 @@ export default function PhysicsCanvas() {
 
     return () => clearInterval(interval)
     // Modifier le comportement pour appliquer une impulsion vers le haut
-  }, [VyOffset])
+  }, [AirDens])
 
   return (
     <>
@@ -96,8 +96,8 @@ export default function PhysicsCanvas() {
       />
       <p>ajouter un boutton pour changer la densité de l'air à celle de l'eau</p>
       <button
-      onClick={() => setVy(boucingCoefficient)}
-      style={{marginTop: 10}}>Faire sauter la particule</button>
+      onClick={() => setVy(100)}
+      style={{marginTop: 10}}>Densité du fluide devient aqueu</button>
     </>
   )
 }
