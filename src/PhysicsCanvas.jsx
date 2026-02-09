@@ -1,103 +1,172 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from "react";
 
-export default function PhysicsCanvas() {
-  const canvasRef = useRef(null)
-
-  const [AirDens, setVy] = useState(1.2)
-  const [boucingCoefficient] = useState(-0.5)
+export default function RigidBodySpringCanvas() {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
 
-    const height = 400
-    const width = 400
+    const width = 400;
+    const height = 400;
+    canvas.width = width;
+    canvas.height = height;
 
-    let x = 200
-    let y = 0
-    let vy = 0
-    let ay = 0
+    const stiffness = 0.5;
+    const b = -1;
+    const angularB = -7;
+    const dt = 0.02;
 
-    const mass = 10 // mass of the ball
-    const r = 10 // radius of the ball
-    const dt = 0.02 // delta of time
-    const boucingCoefficient = -0.25 // A quel point la particule rebondit
-    const airDensity = AirDens // Densité du fluide
-    const ballDragCoefficient = 1 // Coefficient de trainée de la balle
-    const frontalArea = Math.PI * r * r / 10000 // Zone de friction avant de la balle
+    /* ===== Vector ===== */
+    class V {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
 
-    ctx.fillStyle = 'purple'
+      add(v) {
+        return new V(this.x + v.x, this.y + v.y);
+      }
+
+      subtract(v) {
+        return new V(this.x - v.x, this.y - v.y);
+      }
+
+      scale(s) {
+        return new V(this.x * s, this.y * s);
+      }
+
+      cross(v) {
+        return this.x * v.y - this.y * v.x;
+      }
+
+      rotate(angle, origin) {
+        const x = this.x - origin.x;
+        const y = this.y - origin.y;
+
+        return new V(
+          origin.x + (x * Math.cos(angle) - y * Math.sin(angle)),
+          origin.y + (x * Math.sin(angle) + y * Math.cos(angle))
+        );
+      }
+    }
+
+    /* ===== Rectangle ===== */
+    class Rect {
+      constructor(x, y, w, h, m = 1) {
+        this.width = w;
+        this.height = h;
+        this.m = m;
+
+        this.topLeft = new V(x, y);
+        this.topRight = new V(x + w, y);
+        this.bottomRight = new V(x + w, y + h);
+        this.bottomLeft = new V(x, y + h);
+
+        this.v = new V(0, 0);
+        this.a = new V(0, 0);
+
+        this.theta = 0;
+        this.omega = 0;
+        this.alpha = 0;
+
+        this.J = (this.m * (w * w + h * h)) / 12000;
+      }
+
+      center() {
+        return this.topLeft.add(
+          this.bottomRight.subtract(this.topLeft).scale(0.5)
+        );
+      }
+
+      move(v) {
+        this.topLeft = this.topLeft.add(v);
+        this.topRight = this.topRight.add(v);
+        this.bottomRight = this.bottomRight.add(v);
+        this.bottomLeft = this.bottomLeft.add(v);
+      }
+
+      rotate(angle) {
+        this.theta += angle;
+        const c = this.center();
+
+        this.topLeft = this.topLeft.rotate(angle, c);
+        this.topRight = this.topRight.rotate(angle, c);
+        this.bottomRight = this.bottomRight.rotate(angle, c);
+        this.bottomLeft = this.bottomLeft.rotate(angle, c);
+      }
+    }
+
+    /* ===== Scene ===== */
+    const rect = new Rect(200, 0, 100, 50);
+    rect.v = new V(0, 2);
+
+    const spring = new V(200, 0);
 
     function loop() {
-      // Force à l'instant T
-      let fy = 0
+      let f = new V(0, 0);
+      let torque = 0;
 
-      // [Passé]
-      // Verlet integration
-      // Captation d'à quel point la particule s'est déplacée dans cette frame
-      let distanceRunned = vy * dt
-      // Distance parcourue due à l'acceleration moyenne de la particule pendant la frame
-      let meanAccelDist = 0.5 * ay * dt * dt
-      // Distance parcourue par la particule avec l'integration de Verlet Vitesse * deltaTemps + moyenne(acceleration * deltaTemps²)
-      const dy = distanceRunned + meanAccelDist
-      
-      // [Présent]
-      // On applique le mouvement à la position actuelle de la particule
-      y += dy * 100
-      // Collision
-      if (y + r > height && vy > 0) {
-        vy *= boucingCoefficient
-        y = height - r
-      }
+      /* --- Verlet Translation --- */
+      const dr = rect.v
+        .scale(dt)
+        .add(rect.a.scale(0.5 * dt * dt));
 
-      // [Futur]
-      // Calcul de la force totale qui sera appliquée à la particule en fin de frame
-      fy = mass * 9.81
-      let particuleDrag = -0.5 * airDensity * ballDragCoefficient * frontalArea
-      let effetsByVelocity = vy * vy
-      fy += particuleDrag * effetsByVelocity * Math.sign(vy)
-      // On détermine l'accélération que la particule a, à la fin de la frame
-      const new_ay = fy / mass
-      const avg_ay = 0.5 * (new_ay + ay)
-      vy += avg_ay * dt
-      ay = new_ay
+      rect.move(dr.scale(100));
 
-      draw()
+      /* --- Forces --- */
+      f = f.add(new V(0, rect.m * 9.81));       // Gravity
+      f = f.add(rect.v.scale(b));               // Damping
 
-      if (VyOffset !== 0){
-        vy *= boucingCoefficient
-        setVy(0)
-      }
+      const springForce = rect.topLeft
+        .subtract(spring)
+        .scale(-stiffness);
+
+      const r = rect.center().subtract(rect.topLeft);
+      torque += -r.cross(springForce);
+      f = f.add(springForce);
+
+      /* --- Finish Verlet --- */
+      const newA = f.scale(1 / rect.m);
+      const dv = rect.a.add(newA).scale(0.5 * dt);
+      rect.v = rect.v.add(dv);
+      rect.a = newA;
+
+      /* --- Rotation (Euler) --- */
+      torque += rect.omega * angularB;
+      rect.alpha = torque / rect.J;
+      rect.omega += rect.alpha * dt;
+      rect.rotate(rect.omega * dt);
+
+      draw();
     }
 
     function draw() {
-      ctx.clearRect(0, 0, width, height)
-      ctx.beginPath()
-      ctx.arc(x, y, r, 0, Math.PI * 2)
-      ctx.fill()
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.save();
+      ctx.translate(rect.topLeft.x, rect.topLeft.y);
+      ctx.rotate(rect.theta);
+      ctx.strokeRect(0, 0, rect.width, rect.height);
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.moveTo(spring.x, spring.y);
+      ctx.lineTo(rect.topLeft.x, rect.topLeft.y);
+      ctx.stroke();
     }
 
-    const interval = setInterval(loop, dt * 1000)
-
-    return () => clearInterval(interval)
-    // Modifier le comportement pour appliquer une impulsion vers le haut
-  }, [AirDens])
+    const interval = setInterval(loop, dt * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={400}
-        style={{
-          border: '1px solid white',
-          background: 'black'
-        }}
-      />
-      <p>ajouter un boutton pour changer la densité de l'air à celle de l'eau</p>
-      <button
-      onClick={() => setVy(100)}
-      style={{marginTop: 10}}>Densité du fluide devient aqueu</button>
-    </>
-  )
+    <canvas
+      ref={canvasRef}
+      style={{
+        border: "1px solid black",
+        background: "#fafafa"
+      }}
+    />
+  );
 }
