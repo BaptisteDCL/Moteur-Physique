@@ -7,6 +7,7 @@ export default function RigidBodySpringCanvas() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    // Paramères de l'univers
     const width = 400;
     const height = 400;
     canvas.width = width;
@@ -19,19 +20,23 @@ export default function RigidBodySpringCanvas() {
 
     /* ===== Vector ===== */
     class V {
+      // Un vecteur contient une longueur et une largeur
       constructor(x, y) {
         this.x = x;
         this.y = y;
       }
 
+      // Ajouter un vecteur au vecteur actuel
       add(v) {
         return new V(this.x + v.x, this.y + v.y);
       }
 
+      // Soustraire un vecteur au notre (Vecteur distance)
       subtract(v) {
         return new V(this.x - v.x, this.y - v.y);
       }
 
+      // Changer la taille d'un vecteur par un scalaire
       scale(s) {
         return new V(this.x * s, this.y * s);
       }
