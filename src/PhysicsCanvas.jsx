@@ -41,6 +41,7 @@ export default function RigidBodySpringCanvas() {
         return new V(this.x * s, this.y * s);
       }
 
+      // 
       cross(v) {
         return this.x * v.y - this.y * v.x;
       }
@@ -106,7 +107,7 @@ export default function RigidBodySpringCanvas() {
     const rect = new Rect(200, 0, 100, 50);
     rect.v = new V(0, 2);
 
-    const spring = new V(200, 0);
+    const spring = new V(300, 10);
 
     function loop() {
       let f = new V(0, 0);
