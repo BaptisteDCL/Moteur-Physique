@@ -107,7 +107,7 @@ export default function RigidBodySpringCanvas() {
     const rect = new Rect(200, 0, 100, 50);
     rect.v = new V(0, 2);
 
-    const spring = new V(300, 10);
+    const spring = new V(300, 0);
 
     function loop() {
       let f = new V(0, 0);
@@ -124,7 +124,7 @@ export default function RigidBodySpringCanvas() {
       f = f.add(new V(0, rect.m * 9.81));       // Gravity
       f = f.add(rect.v.scale(b));               // Damping
 
-      const springForce = rect.topLeft
+      const springForce = rect.topRight
         .subtract(spring)
         .scale(-stiffness);
 
